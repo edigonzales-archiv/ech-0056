@@ -30,7 +30,7 @@
     <script src="http://openlayers.org/en/v3.9.0/build/ol.js" type="text/javascript"></script>
     <div id="map" class="map"></div>
     <script type="text/javascript">
-    
+
       var layerName = getParameterByName('layer');
 
       var projection = new ol.proj.Projection({
@@ -42,7 +42,8 @@
       var projectionExtent = projection.getExtent();
       var zoomLevels = 29;
       var resolutions = [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1];
-      var matrixIds = new Array(zoomLevels);
+      //var matrixIds = new Array(zoomLevels);
+      var matrixIds = new Array(resolutions.length);
 
       for (var z = 0; z < zoomLevels; ++z) {
           matrixIds[z] = z;
@@ -85,7 +86,7 @@
           view: new ol.View({
               projection: projection,
               center: [607100, 226700],
-              zoom: 20,
+              zoom: 21,
               resolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05]
           })
       });
