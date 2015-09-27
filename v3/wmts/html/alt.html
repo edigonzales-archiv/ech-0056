@@ -50,8 +50,8 @@
       }
 
       var layer = new ol.layer.Tile({
-          layerName: "Orthofoto NDVI",
-          layerId: "orthofoto_ndvi",
+          layerName: "Orthofoto NDVI", // TODO
+          layerId: "orthofoto_ndvi", // TODO
           baselayer: true,
           visible: true,
           source: new ol.source.WMTS({
@@ -59,7 +59,7 @@
               layer: layerName,
               requestEncoding: 'REST',
               matrixSet: '21781',
-              format: 'image/jpeg',
+              format: 'image/jpeg', // change this according to the layers...
               projection: projection,
               tileGrid: new ol.tilegrid.WMTS({
                   origin: ol.extent.getTopLeft(projectionExtent),
