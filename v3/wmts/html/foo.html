@@ -31,7 +31,16 @@
     <div id="map" class="map"></div>
     <script type="text/javascript">
 
+      var mode = '1';
+      var mode = getParameterByName('mode');
+      console.log(mode)
+
       var layerName = getParameterByName('layer');
+      var imageFormat = "image/png";
+
+      if (layerName.indexOf("orthofoto")) {
+        imageFormat = "image/jpeg"
+      }
 
       var projection = new ol.proj.Projection({
           code: 'EPSG:21781',
@@ -40,41 +49,43 @@
       });
 
       var projectionExtent = projection.getExtent();
+
       var zoomLevels = 29;
       var resolutions = [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1];
-      //var matrixIds = new Array(zoomLevels);
       var matrixIds = new Array(resolutions.length);
+      var matrixSet = '21781';
+
+      if (mode != '1') {
+        zoomLevels = 16;
+        resolutions = [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05];
+        matrixIds = new Array(resolutions.length);
+        matrixSet = '21781new';
+        console.log('fubar');
+      }
 
       for (var z = 0; z < zoomLevels; ++z) {
           matrixIds[z] = z;
       }
 
       var layer = new ol.layer.Tile({
-          layerName: "Orthofoto NDVI", // TODO
-          layerId: "orthofoto_ndvi", // TODO
-          baselayer: true,
-          visible: true,
           source: new ol.source.WMTS({
               url: "http://www.catais.org/mapcache/wmts/1.0.0/{Layer}/default/21781/" + "{TileMatrix}/{TileRow}/{TileCol}",
               layer: layerName,
               requestEncoding: 'REST',
-              matrixSet: '21781',
-              format: 'image/jpeg', // change this according to the layers...
+              matrixSet: matrixSet,
+              format: imageFormat,
               projection: projection,
               tileGrid: new ol.tilegrid.WMTS({
                   origin: ol.extent.getTopLeft(projectionExtent),
                   resolutions: resolutions,
                   matrixIds: matrixIds
               }),
-
-              //extent: [590000, 210000, 645000, 262000],
               style: 'default'
           })
       });
 
       var map = new ol.Map({
           renderer: 'canvas',
-          //renderer: 'dom',
           controls: ol.control.defaults().extend([
               new ol.control.FullScreen(),
           ]),
@@ -86,7 +97,7 @@
           view: new ol.View({
               projection: projection,
               center: [607100, 226700],
-              zoom: 21,
+              zoom: 14,
               resolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05]
           })
       });
